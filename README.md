@@ -37,7 +37,7 @@ This project generates a secure passphrase using the Diceware method. The passph
 
 - `diceware.py`: The main script for generating the passphrase.
 - `eff_large_wordlist.txt`: The word list used for generating the passphrase.
-- - Not included in the repository, download from [EFF Diceware Wordlist](https://www.eff.org/files/2016/07/18/eff_large_wordlist.txt).
+  - Not included in the repository, download from [EFF Diceware Wordlist](https://www.eff.org/files/2016/07/18/eff_large_wordlist.txt).
 - `diceware.log`: The log file for debugging.
 
 ## License
