@@ -2,23 +2,21 @@ import logging
 import secrets
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)  # Change to DEBUG to start logging
 FORMAT = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 
 
 def roll_dice() -> str:
-    total_rolls = ""
-    for _ in range(5):
-        dice_roll = secrets.randbelow(6) + 1
-        logger.debug(f"You rolled a {dice_roll}")
-        total_rolls += str(dice_roll)
-    total_rolls = str(int(total_rolls))
-    return total_rolls
+    return "".join(str(secrets.randbelow(6) + 1) for _ in range(5))
 
 
 def load_word_list() -> dict:
-    with open("eff_large_wordlist.txt") as f:
-        return {line.split('\t')[0].strip(): line.split('\t')[1].strip() for line in f.readlines()}
+    try:
+        with open("eff_large_wordlist.txt") as f:
+            return {line.split(maxsplit=1)[0]: line.split(maxsplit=1)[1].strip() for line in f}
+    except FileNotFoundError:
+        print("Word list file not found. Ensure 'eff_large_wordlist.txt' is in the working directory.")
+        logger.error("Word list file not found. Ensure 'eff_large_wordlist.txt' is in the working directory.")
+        exit(1)
 
 
 def generate_word(word_list: dict) -> str:
@@ -36,9 +34,18 @@ def generate_passphrase(num_words: int) -> str:
 
 def main():
     logging.basicConfig(filename='diceware.log', level=logging.DEBUG, format=FORMAT)
+    # logger.setLevel(logging.DEBUG)  # Uncomment to start logging
     print("Welcome to Diceware!")
-    num_words = int(input("How many words would you like to generate? "))
-    print("Your passphrase is: ", generate_passphrase(num_words))
+    try:
+        num_words = int(input("How many words would you like to generate? "))
+        if num_words <= 0:
+            raise ValueError("Number of words must be greater than zero.")
+    except ValueError as e:
+        logger.error(f"Invalid input: {e}")
+        print("Please enter a valid positive integer.")
+        return
+
+    print("Your passphrase is:", generate_passphrase(num_words))
 
 
 if __name__ == '__main__':
