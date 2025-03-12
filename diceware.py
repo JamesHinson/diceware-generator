@@ -12,7 +12,7 @@ def roll_dice() -> str:
         dice_roll = secrets.randbelow(6) + 1
         logger.debug(f"You rolled a {dice_roll}")
         total_rolls += str(dice_roll)
-    total_rolls = str(int(total_rolls) )
+    total_rolls = str(int(total_rolls))
     return total_rolls
 
 
